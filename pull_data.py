@@ -107,11 +107,21 @@ if __name__ == "__main__":
                         type = str, 
                         help = "Last date of data to extract, format like mm/dd/yyyy. Defaults to today.", 
                         default = datetime.date.today().strftime('%m/%d/%Y'))
+    
+    parser.add_argument("-i",
+                        "--ignore",
+                        help = "Ignores the end date, program will pull data for only the start date.",
+                        action = "store_true")
+
     args = parser.parse_args()
     
     start_date = datetime.datetime.strptime(args.start_date,'%m/%d/%Y')
-    end_date = datetime.datetime.strptime(args.end_date,'%m/%d/%Y')
 
+    if args.ignore:
+        end_date = start_date
+    else:
+        end_date = datetime.datetime.strptime(args.end_date,'%m/%d/%Y')
+    
     date_diff = end_date - start_date
 
     if date_diff.days >= 0: 
